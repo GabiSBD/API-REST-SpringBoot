@@ -18,7 +18,7 @@ public class WebSecurityConfig{
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .antMatchers("/", "/api/get/laptops", "/api/get/laptops/*");
+                .antMatchers("/");
     }
     @Bean
     public UserDetailsService userDetailsService() {
