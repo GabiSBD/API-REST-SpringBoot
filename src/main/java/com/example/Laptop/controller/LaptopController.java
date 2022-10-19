@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ public class LaptopController {
      * lista todos los laptops persistidos en la bbdd H2
      * @return ResponseEntity<List<Laptop>>
      */
-    @GetMapping("/api/laptops")
+    @GetMapping("/api/get/laptops")
     @ApiOperation("lista todos los registros Laptop persistidos en la base de datos")
     public ResponseEntity<List<Laptop>> findAll(){
 
@@ -39,7 +38,7 @@ public class LaptopController {
      * @param id: cave primaria del la entidad Laptop
      * @return ResponseEntity<Laptop>
      */
-    @GetMapping("/api/laptops/{id}")
+    @GetMapping("/api/get/laptops/{id}")
     @ApiOperation("muestra el registro bucado por su clave primaria (id)")
     public ResponseEntity<Laptop> findOneById(@ApiParam("Clave primaria de la entidad Laptop tipo Long") @PathVariable Long id){
        Optional<Laptop> opt = laptopRepository.findById(id);
@@ -52,7 +51,7 @@ public class LaptopController {
      * @param laptop: obtenido del body de la peticion en formato Json
      * @return Laptop
      */
-    @PostMapping("/api/laptops")
+    @PostMapping("/api/post/laptops")
     @ApiOperation("crea un nuevo registro en la tabla Laptops")
     public Laptop create(@ApiParam("objeto Laptop en formato Json") @RequestBody Laptop laptop){
         return laptopRepository.save(laptop);
@@ -63,7 +62,7 @@ public class LaptopController {
      * @param updateLaptop: objeto laptop introducido desde la peticion en formato Json
      * @return ResponseEntity<Laptop>
      */
-    @PutMapping("/api/laptops")
+    @PutMapping("/api/put/laptops")
     @ApiOperation("actualiza un registro de la tabla Laptops")
     public ResponseEntity<Laptop> update(@RequestBody Laptop updateLaptop){
         try{
@@ -102,7 +101,7 @@ public class LaptopController {
      * Borra todo los registros de la tabla Laptops
      * @return ResponseEntity<Laptop>
      */
-    @DeleteMapping("/api/books/all")
+    @DeleteMapping("/api/delete/laptops/all")
     @ApiIgnore
     public ResponseEntity<Laptop> deleteAll(){
         laptopRepository.deleteAll();
@@ -113,7 +112,7 @@ public class LaptopController {
      * Borra un registro buscado selecionado por su id
      * @return ResponseEntity<Laptop>
      */
-    @DeleteMapping("api/books/{id}")
+    @DeleteMapping("api/delete/laptops/{id}")
     @ApiIgnore
     public ResponseEntity<Laptop> deleteById(@PathVariable Long id){
         try{

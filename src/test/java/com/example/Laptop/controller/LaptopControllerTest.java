@@ -3,6 +3,7 @@ package com.example.Laptop.controller;
 import com.example.Laptop.LaptopApplication;
 import com.example.Laptop.entity.Laptop;
 import com.example.Laptop.repository.LaptopRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.apache.catalina.LifecycleState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,8 @@ class LaptopControllerTest {
         ResponseEntity<Laptop[]> response =
                 template.getForEntity("/api/laptops",Laptop[].class);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals(401, response.getStatusCodeValue());
     }
 
     @Test
@@ -41,8 +42,8 @@ class LaptopControllerTest {
         ResponseEntity<Laptop> response =
                 template.getForEntity("/api/laptops/1", Laptop.class);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(200,response.getStatusCodeValue());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals(401,response.getStatusCodeValue());
     }
 
     @Test
@@ -76,5 +77,4 @@ class LaptopControllerTest {
     private TestRestTemplate template;
     @Autowired
     private RestTemplateBuilder templateBuilder;
-
 }
