@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
@@ -22,19 +22,21 @@ public class WebSecurityConfig{
     }
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
+        UserDetails user = User.builder()
                 .username("user")
                 .password(passwordEncoder().encode("u1234"))
                 .roles("USER")
                 .build();
-        UserDetails admin = User.withDefaultPasswordEncoder()
+        UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder().encode("adminRules"))
                 .roles("ADMIN", "USER")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
     }
-    @Bean
-    public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
+@Bean
+    public PasswordEncoder passwordEncoder(){
+        return new Argon2PasswordEncoder();
+}
 
 }
