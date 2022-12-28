@@ -57,5 +57,5 @@ public class Laptop {
     private String manufacturer;
     @ApiModelProperty("Modelo del dispositivo")
     private String model;
-    private static Long contID;
+   // private static Long contID;
 }
