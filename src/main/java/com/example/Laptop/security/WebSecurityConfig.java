@@ -1,33 +1,31 @@
 package com.example.Laptop.security;
 
 
-import com.example.Laptop.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 
-import java.util.ArrayList;
+
+
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig{
-    private UserRepository userRepository;
-   private List<com.example.Laptop.entity.User> listRepository = userRepository.findAll();
+   @Autowired
+   private UserDetailsServiceImpl userDetailsService;
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
@@ -35,7 +33,10 @@ public class WebSecurityConfig{
     }
 
 
-    @Bean
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+   /* @Bean
     public UserDetailsService userDetailsService() {
 
         ArrayList<UserDetails> list= new ArrayList<>();
@@ -48,6 +49,7 @@ public class WebSecurityConfig{
                         .roles("ADMIN", "USER")
                         .build();
                 list.add(admin);
+
             }
             else {
                 UserDetails user = User.builder()
@@ -56,12 +58,13 @@ public class WebSecurityConfig{
                         .roles("USER")
                         .build();
                 list.add(user);
+
             }
         }
         return new InMemoryUserDetailsManager(list);
-    }
+    }*/
 
-@Bean
+    @Bean
     public static PasswordEncoder passwordEncoder(){
 
         String idForEncoder = "Pbkdf2";
@@ -73,6 +76,6 @@ public class WebSecurityConfig{
 
 
         return new DelegatingPasswordEncoder(idForEncoder, encoderMap);
-}
+    }
 
 }
